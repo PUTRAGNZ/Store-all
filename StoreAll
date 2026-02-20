@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Toko Alamsyah</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;scroll-behavior:smooth}
+body{background:#e0f2fe;color:#0f172a}
+nav{background:#38bdf8;padding:15px 40px;display:flex;justify-content:space-between;align-items:center;color:white;position:sticky;top:0}
+nav a{color:white;text-decoration:none;margin-left:20px;font-weight:500}
+.hero{text-align:center;padding:80px 20px;background:linear-gradient(135deg,#38bdf8,#0ea5e9);color:white}
+.hero h2{font-size:38px;margin-bottom:15px}
+.btn-primary{background:white;color:#0ea5e9;padding:12px 25px;border-radius:8px;text-decoration:none;font-weight:600}
+.container{max-width:1100px;margin:auto;padding:60px 20px}
+.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:25px}
+.card{background:white;padding:20px;border-radius:15px;box-shadow:0 10px 25px rgba(0,0,0,0.08);text-align:center;transition:0.3s}
+.card:hover{transform:translateY(-8px)}
+.card img{width:100%;border-radius:12px;margin-bottom:15px}
+.price{font-weight:600;color:#0ea5e9;margin:10px 0}
+.btn-buy{padding:10px 20px;background:#38bdf8;color:white;border:none;border-radius:8px;cursor:pointer}
+.testimoni{background:#f0f9ff;padding:60px 20px}
+.testi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;max-width:1000px;margin:auto}
+.testi-card{background:white;padding:20px;border-radius:12px;box-shadow:0 5px 15px rgba(0,0,0,0.05)}
+.cart{position:fixed;right:20px;bottom:20px;background:#0ea5e9;color:white;padding:20px;border-radius:15px;width:300px;box-shadow:0 10px 25px rgba(0,0,0,0.2)}
+.cart h3{margin-bottom:10px}
+.cart ul{list-style:none;max-height:150px;overflow:auto;margin-bottom:10px}
+.cart button{width:100%;padding:10px;background:white;color:#0ea5e9;border:none;border-radius:8px;font-weight:600;cursor:pointer}
+footer{background:#38bdf8;text-align:center;padding:20px;color:white;margin-top:50px}
+</style>
+</head>
+<body>
+
+<nav>
+  <h1>Toko Alamsyah</h1>
+  <div>
+    <a href="#produk">Produk</a>
+    <a href="#testimoni">Testimoni</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <h2>Belanja Mudah & Modern</h2>
+  <p>Produk terbaik. Harga masuk akal. Tampilan gak murahan.</p>
+  <a href="#produk" class="btn-primary">Lihat Produk</a>
+</section>
+
+<div class="container" id="produk">
+  <h2 style="text-align:center;margin-bottom:40px;">Produk Kami</h2>
+  <div class="products">
+
+    <div class="card">
+      <img src="https://via.placeholder.com/300">
+      <h3>Produk 1</h3>
+      <p class="price" data-price="50000">Rp 50.000</p>
+      <button class="btn-buy" onclick="addToCart('Produk 1',50000)">Tambah</button>
+    </div>
+
+    <div class="card">
+      <img src="https://via.placeholder.com/300">
+      <h3>Produk 2</h3>
+      <p class="price" data-price="75000">Rp 75.000</p>
+      <button class="btn-buy" onclick="addToCart('Produk 2',75000)">Tambah</button>
+    </div>
+
+    <div class="card">
+      <img src="https://via.placeholder.com/300">
+      <h3>Produk 3</h3>
+      <p class="price" data-price="100000">Rp 100.000</p>
+      <button class="btn-buy" onclick="addToCart('Produk 3',100000)">Tambah</button>
+    </div>
+
+  </div>
+</div>
+
+<section class="testimoni" id="testimoni">
+  <h2 style="text-align:center;margin-bottom:40px;">Apa Kata Mereka?</h2>
+  <div class="testi-grid">
+    <div class="testi-card">"Barangnya bagus banget, pengiriman cepat." - Rian</div>
+    <div class="testi-card">"Harga masuk akal, kualitas mantap." - Sinta</div>
+    <div class="testi-card">"Tampilan websitenya modern." - Dika</div>
+  </div>
+</section>
+
+<div class="cart">
+  <h3>Keranjang</h3>
+  <ul id="cart-list"></ul>
+  <p><strong>Total: Rp <span id="total">0</span></strong></p>
+  <button onclick="checkout()">Checkout WA</button>
+</div>
+
+<footer>
+  © 2026 Toko Alamsyah
+</footer>
+
+<script>
+let cart=[];
+let total=0;
+
+function addToCart(name,price){
+  cart.push({name,price});
+  total+=price;
+  renderCart();
+}
+
+function renderCart(){
+  const list=document.getElementById("cart-list");
+  list.innerHTML="";
+  cart.forEach(item=>{
+    let li=document.createElement("li");
+    li.textContent=item.name+" - Rp "+item.price.toLocaleString();
+    list.appendChild(li);
+  });
+  document.getElementById("total").textContent=total.toLocaleString();
+}
+
+function checkout(){
+  if(cart.length===0){
+    alert("Keranjang kosong");
+    return;
+  }
+  let message="Halo, saya ingin pesan:%0A";
+  cart.forEach(item=>{
+    message+=`- ${item.name} (Rp ${item.price.toLocaleString()})%0A`;
+  });
+  message+=`Total: Rp ${total.toLocaleString()}`;
+  window.open("https://wa.me/628XXXXXXXXXX?text="+message,"_blank");
+}
+</script>
+
+</body>
+</html>
